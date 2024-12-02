@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Calculators</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --bg-dark-secondary: #1E1E1E;
+            --accent-green: #4CAF50;
+            --text-primary: #E0E0E0;
+            --text-secondary: #A0A0A0;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+        }
+        .calculator-container {
+            background-color: var(--bg-dark-secondary);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            background-color: var(--accent-green);
+            color: white;
+        }
+        .input-group input {
+            background-color: var(--bg-dark);
+            border-color: var(--bg-dark-secondary);
+            color: var(--text-primary);
+        }
+        .result-card {
+            background-color: var(--bg-dark);
+            border-radius: 10px;
+        }
+        .tooltip {
+            background-color: var(--accent-green);
+            color: white;
+        }
+        .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: var(--header-height); /* Ensure space for the fixed header */
+}
+
+.nav-container {
+    background-color: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(15px);
+    border-radius: 50px;
+    padding: 10px 40px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: #4CAF50;
+}
+
+.cta-buttons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background-color: #4CAF50;
+    color: white;
+    border: 2px solid #4CAF50;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: #4CAF50;
+    border: 2px solid #4CAF50;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                💹 Stock Wallet
+            </div>
+            <div class="cta-buttons">
+                <a href="3.html" class="btn btn-secondary">🧮 Calculator</a>
+                <a href="1.html" class="btn btn-primary">Get Started</a>
+            </div>
+        </div>
+    </header>
+    
+    
+    <div class="container mx-auto px-4 py-8 flex-grow mt-20">
+        <h1 class="text-4xl font-bold text-center mb-12 text-white">Financial Investment Calculators</h1>
+        <div class="flex justify-center mb-8 mt-20">
+            <button id="sipTab" class="tab-button px-6 py-3 mx-2 rounded-lg border border-gray-700 active">
+                SIP Calculator
+            </button>
+            <button id="lumpsumTab" class="tab-button px-6 py-3 mx-2 rounded-lg border border-gray-700">
+                Lumpsum Calculator
+            </button>
+        </div>
+    
+        <div class="max-w-4xl mx-auto">
+            <div id="sipCalculator" class="calculator-container p-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="input-group">
+                        <label class="block mb-2 text-sm text-text-secondary">Monthly Investment (₹)</label>
+                        <input 
+                            type="number" 
+                            id="sipAmount" 
+                            value="5000" 
+                            class="w-full p-3 rounded-lg border border-gray-700"
+                        />
+                    </div>
+                    <div class="input-group">
+                        <label class="block mb-2 text-sm text-text-secondary">Expected Annual Return (%)</label>
+                        <input 
+                            type="number" 
+                            id="sipRate" 
+                            value="12" 
+                            class="w-full p-3 rounded-lg border border-gray-700"
+                        />
+                    </div>
+                    <div class="input-group">
+                        <label class="block mb-2 text-sm text-text-secondary">Investment Period (Years)</label>
+                        <input 
+                            type="number" 
+                            id="sipYears" 
+                            value="10" 
+                            class="w-full p-3 rounded-lg border border-gray-700"
+                        />
+                    </div>
+                </div>
+                <button 
+                    id="calculateSIP"
+                    class="mt-6 w-full py-4 rounded-lg bg-accent-green text-white font-semibold hover:opacity-90 transition-all"
+                >
+                    Calculate Investment
+                </button>
+    
+                <div id="sipResults" class="mt-8 hidden">
+                    <div class="grid grid-cols-3 gap-4 result-card p-6">
+                        <div class="text-center">
+                            <p class="text-text-secondary text-sm mb-2">Total Investment</p>
+                            <p id="sipTotalInvestment" class="text-xl font-bold"></p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-text-secondary text-sm mb-2">Final Value</p>
+                            <p id="sipFinalValue" class="text-xl font-bold"></p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-text-secondary text-sm mb-2">Total Returns</p>
+                            <p id="sipTotalReturns" class="text-xl font-bold text-accent-green"></p>
+                        </div>
+                    </div>
+                    <div class="mt-6 bg-bg-dark-secondary p-4 rounded-lg">
+                        <canvas id="sipChart" class="w-full h-96"></canvas>
+                    </div>
+                </div>
+            </div>
+    
+            <div id="lumpsumCalculator" class="calculator-container p-8 hidden">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="input-group">
+                        <label class="block mb-2 text-sm text-text-secondary">Investment Amount (₹)</label>
+                        <input 
+                            type="number" 
+                            id="lumpAmount" 
+                            value="100000" 
+                            class="w-full p-3 rounded-lg border border-gray-700"
+                        />
+                    </div>
+                    <div class="input-group">
+                        <label class="block mb-2 text-sm text-text-secondary">Expected Annual Return (%)</label>
+                        <input 
+                            type="number" 
+                            id="lumpRate" 
+                            value="12" 
+                            class="w-full p-3 rounded-lg border border-gray-700"
+                        />
+                    </div>
+                    <div class="input-group">
+                        <label class="block mb-2 text-sm text-text-secondary">Investment Period (Years)</label>
+                        <input 
+                            type="number" 
+                            id="lumpYears" 
+                            value="10" 
+                            class="w-full p-3 rounded-lg border border-gray-700"
+                        />
+                    </div>
+                </div>
+                <button 
+                    id="calculateLumpsum"
+                    class="mt-6 w-full py-4 rounded-lg bg-accent-green text-white font-semibold hover:opacity-90 transition-all"
+                >
+                    Calculate Investment
+                </button>
+    
+                <div id="lumpResults" class="mt-8 hidden">
+                    <div class="grid grid-cols-3 gap-4 result-card p-6">
+                        <div class="text-center">
+                            <p class="text-text-secondary text-sm mb-2">Total Investment</p>
+                            <p id="lumpTotalInvestment" class="text-xl font-bold"></p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-text-secondary text-sm mb-2">Final Value</p>
+                            <p id="lumpFinalValue" class="text-xl font-bold"></p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-text-secondary text-sm mb-2">Total Returns</p>
+                            <p id="lumpTotalReturns" class="text-xl font-bold text-accent-green"></p>
+                        </div>
+                    </div>
+                    <div class="mt-6 bg-bg-dark-secondary p-4 rounded-lg">
+                        <canvas id="lumpChart" class="w-full h-96"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <script>
+        // Tab Switching Logic
+        const sipTab = document.getElementById('sipTab');
+        const lumpsumTab = document.getElementById('lumpsumTab');
+        const sipCalculator = document.getElementById('sipCalculator');
+        const lumpsumCalculator = document.getElementById('lumpsumCalculator');
+
+        function switchTab(activeTab, inactiveTab, activeCalculator, inactiveCalculator) {
+            activeTab.classList.add('active');
+            inactiveTab.classList.remove('active');
+            activeCalculator.classList.remove('hidden');
+            inactiveCalculator.classList.add('hidden');
+        }
+
+        sipTab.addEventListener('click', () => {
+            switchTab(sipTab, lumpsumTab, sipCalculator, lumpsumCalculator);
+        });
+
+        lumpsumTab.addEventListener('click', () => {
+            switchTab(lumpsumTab, sipTab, lumpsumCalculator, sipCalculator);
+        });
+
+        // Shared Chart Configuration
+        function createChart(ctx, labels, investmentData, returnsData) {
+            return new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Total Investment',
+                            data: investmentData,
+                            borderColor: '#8884d8',
+                            backgroundColor: 'rgba(136, 132, 216, 0.2)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Total Returns',
+                            data: returnsData,
+                            borderColor: '#4CAF50',
+                            backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'white'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: 'white',
+                                callback: function(value) {
+                                    return '₹' + value.toLocaleString();
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(255,255,255,0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'white'
+                            },
+                            grid: {
+                                color: 'rgba(255,255,255,0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // SIP Calculation
+        const calculateSIP = document.getElementById('calculateSIP');
+        calculateSIP.addEventListener('click', () => {
+            const amount = parseFloat(document.getElementById('sipAmount').value);
+            const rate = parseFloat(document.getElementById('sipRate').value);
+            const years = parseFloat(document.getElementById('sipYears').value);
+
+            const monthlyRate = rate / 12 / 100;
+            const months = years * 12;
+            const totalInvestment = amount * months;
+            const finalValue = amount * (((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate) * (1 + monthlyRate));
+
+            document.getElementById('sipTotalInvestment').textContent = `₹${totalInvestment.toLocaleString()}`;
+            document.getElementById('sipFinalValue').textContent = `₹${finalValue.toLocaleString()}`;
+            document.getElementById('sipTotalReturns').textContent = `₹${(finalValue - totalInvestment).toLocaleString()}`;
+
+            const sipResultsDiv = document.getElementById('sipResults');
+            sipResultsDiv.classList.remove('hidden');
+
+            const labels = Array.from({length: years + 1}, (_, i) => `Year ${i}`);
+            const investmentData = Array.from({length: years + 1}, (_, i) => amount * 12 * i);
+            const returnsData = Array.from({length: years + 1}, (_, i) => 
+                amount * (((Math.pow(1 + monthlyRate, i * 12) - 1) / monthlyRate) * (1 + monthlyRate))
+            );
+
+            const ctx = document.getElementById('sipChart').getContext('2d');
+            createChart(ctx, labels, investmentData, returnsData);
+        });
+
+        // Lumpsum Calculation
+        const calculateLumpsum = document.getElementById('calculateLumpsum');
+        calculateLumpsum.addEventListener('click', () => {
+            const amount = parseFloat(document.getElementById('lumpAmount').value);
+            const rate = parseFloat(document.getElementById('lumpRate').value);
+            const years = parseFloat(document.getElementById('lumpYears').value);
+
+            const finalValue = amount * Math.pow(1 + rate / 100, years);
+
+            document.getElementById('lumpTotalInvestment').textContent = `₹${amount.toLocaleString()}`;
+            document.getElementById('lumpFinalValue').textContent = `₹${finalValue.toLocaleString()}`;
+            document.getElementById('lumpTotalReturns').textContent = `₹${(finalValue - amount).toLocaleString()}`;
+
+            const lumpResultsDiv = document.getElementById('lumpResults');
+            lumpResultsDiv.classList.remove('hidden');
+
+            const labels = Array.from({length: years + 1}, (_, i) => `Year ${i}`);
+            const investmentData = Array.from({length: years + 1}, () => amount);
+            const returnsData = Array.from({length: years + 1}, (_, i) => 
+                amount * Math.pow(1 + rate / 100, i)
+            );
+
+            const ctx = document.getElementById('lumpChart').getContext('2d');
+            createChart(ctx, labels, investmentData, returnsData);
+        });
+    </script>
+</body>
+</html>

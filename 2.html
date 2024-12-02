@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Wallet - Financial Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #121212;
+            color: #E0E0E0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Floating Navigation */
+        .header {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .nav-container {
+            background-color: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(15px);
+            border-radius: 50px;
+            padding: 10px 40px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: #4CAF50;
+            margin-right: 30px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-left: 30px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+            border: 2px solid #4CAF50;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            min-height: 100vh;
+            padding: 80px 0;
+            gap: 50px;
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            color: #4CAF50;
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            color: #B0B0B0;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        .hero-image {
+            flex: 1;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-image dotlottie-player {
+            width: 500px;
+            height: 500px;
+        }
+
+        /* Features Section */
+        .features {
+            background-color: #1E1E1E;
+            padding: 80px 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: #252525;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background-color: #2C2C2C;
+        }
+
+        .feature-card div {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 15px;
+            font-size: 22px;
+            color: #4CAF50;
+        }
+
+        .feature-card p {
+            color: #B0B0B0;
+        }
+
+        /* Methodology Section */
+        .methodology {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+            padding: 80px 0;
+            display: flex;
+            min-height: 100vh;
+        }
+    
+
+        .methodology-content {
+            flex: 1;
+            padding-right: 20px;
+        }
+
+        .methodology-content h2 {
+            font-size: 42px;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .methodology-content p {
+            color: #B0B0B0;
+            margin-bottom: 20px;
+        }
+
+        .methodology-content ul {
+            color: #E0E0E0;
+            padding-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .methodology-content ul li {
+            margin-bottom: 10px;
+        }
+
+        .methodology-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .methodology-image dotlottie-player {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #1E1E1E;
+            color: #B0B0B0;
+            text-align: center;
+            padding: 20px 0;
+            border-top: 2px solid #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                💹 Stock Wallet
+            </div>
+            <div class="cta-buttons">
+                <a href="C:\Users\Aashutosh Tiwari\OneDrive\Desktop\stock-wallet\assets\3.html" class="btn btn-secondary">🧮 Calculator</a>
+                <a href="file:///C:/Users/Aashutosh%20Tiwari/OneDrive/Desktop/stock-wallet/assets/1.html" class="btn btn-primary">Get Started</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero container">
+        <div class="hero-content">
+            <h1>Invest Smarter, Grow Faster</h1>
+            <p>Unlock your financial potential with Stock Wallet. Smart, secure, and intuitive investment solutions tailored to your goals.</p>
+            <a href="file:///C:/Users/Aashutosh%20Tiwari/OneDrive/Desktop/stock-wallet/assets/1.html" class="btn btn-primary">Get Started</a>
+        </div>
+        <div class="hero-image">
+            <dotlottie-player 
+                src="https://lottie.host/13d00a38-2dea-4831-96ff-d73f5f683366/KimV84tyDK.lottie" 
+                background="transparent" 
+                speed="1" 
+                style="width: 500px; height: 500px" 
+                loop 
+                autoplay>
+            </dotlottie-player>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container features-grid">
+            <div class="feature-card">
+                <div>📊</div>
+                <h3>Portfolio Tracking</h3>
+                <p>Monitor and analyze your investments in real-time.</p>
+            </div>
+            <div class="feature-card">
+                <div>💹</div>
+                <h3>Market Insights</h3>
+                <p>Get deep insights and smart investment recommendations.</p>
+            </div>
+            <div class="feature-card">
+                <div>🔒</div>
+                <h3>Secure Investments</h3>
+                <p>Advanced security to protect your financial data.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="methodology container">
+        <div class="methodology-content">
+            <h2>Our Investment Philosophy</h2>
+            <p>Stock Wallet provides personalized investment recommendations based on:</p>
+            <ul>
+                <li>Age-based risk assessment</li>
+                <li>Individual risk tolerance</li>
+                <li>Diversification across multiple asset classes</li>
+            </ul>
+            <p>Our algorithm adapts recommendations to balance potential returns with personal financial goals, ensuring a tailored approach to wealth building.</p>
+        </div>
+        <div class="methodology-image">
+            <dotlottie-player 
+                src="https://lottie.host/a93078af-8f55-4ae3-a29d-337f7e036142/oOWTYe8POE.lottie" 
+                background="transparent" 
+                speed="1" 
+                loop 
+                autoplay 
+                style="width: 100%; max-width: 400px; height: auto;">
+            </dotlottie-player>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>© 2024 Stock Wallet. All rights reserved.</p>
+    </footer>
+</body>
+</html>
